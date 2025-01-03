@@ -38,6 +38,14 @@ public class Server extends Thread {
 
         } catch (IOException e) {
             throw new RuntimeException(e);
+        } finally {
+            if (serverSocket != null) {
+                try {
+                    serverSocket.close();
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+            }
         }
     }
 
@@ -50,7 +58,7 @@ public class Server extends Thread {
         try {
             int port = Integer.parseInt(args[0]);
             Server server = new Server(port);
-            // TODO: Start server
+            server.start();
         } catch (NumberFormatException e) {
             System.out.println("Invalid port number, try again with integer.");
         }
