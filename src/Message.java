@@ -111,6 +111,6 @@ public class Message {
      */
     @Override
     public String toString() {
-        return "From: " + sender + "\nTo: " + receiver + "\n" + body;
+        return "From: " + sender + "\nTo: " + receiver + "\n" + body + "\n" + "Status: " + (isRead() ? "Read" : "Not Read");
     }
 }

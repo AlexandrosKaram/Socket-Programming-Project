@@ -10,7 +10,7 @@ public class Server extends Thread {
     private int portNumber = 5000;
 
     private int nextAuthToken = 0;
-    private Map<Account, Integer> accountMap = new HashMap<>();
+    private Map<Integer, Account> tokenMap = new HashMap<>();
 
     private BufferedReader input;
     private PrintWriter output;
