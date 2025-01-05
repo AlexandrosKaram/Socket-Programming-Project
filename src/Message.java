@@ -7,6 +7,9 @@ public class Message {
     private String receiver;
     private String body;
 
+    private static int idCounter = 0; // Static counter for unique IDs
+    private final int id;            // Unique ID for each message
+
     /**
      * Default constructor that initializes the message with empty fields and unread status.
      */
@@ -15,6 +18,7 @@ public class Message {
         sender = "";
         receiver = "";
         body = "";
+        this.id = idCounter++;
     }
 
     /**
@@ -30,6 +34,7 @@ public class Message {
         this.sender = sender;
         this.receiver = receiver;
         this.body = body;
+        this.id = idCounter++;
     }
 
     /**
@@ -105,12 +110,22 @@ public class Message {
     }
 
     /**
-     * Returns a string representation of the message, including sender, receiver, and body.
+     * Gets the id of the message.
      *
-     * @return a formatted string representing the message
+     * @return the id of the message
      */
-    @Override
-    public String toString() {
-        return "From: " + sender + "\nTo: " + receiver + "\n" + body + "\n" + "Status: " + (isRead() ? "Read" : "Not Read");
+    public int getId() {return id;}
+
+    public String printMessageStatus() {
+        StringBuilder message = new StringBuilder();
+        message.append(id + ". from: ");
+        message.append(sender);
+        message.append(!isRead ? "*" : "");
+
+        return message.toString();
+    }
+
+    public String printMessage() {
+        return ("(" + sender + ")" + " " + body);
     }
 }

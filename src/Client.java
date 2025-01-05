@@ -10,13 +10,15 @@ public class Client extends Thread {
     private int portNumber;
     private Socket socket;
     private String[] requestArgs;
+    private int functionID;
 
     private BufferedReader input;
     private PrintWriter output;
 
-    public Client(String ipAddress, int portNumber, String[] requestArgs) {
+    public Client(String ipAddress, int portNumber, int functionID, String[] requestArgs) {
         this.ipAddress = ipAddress;
         this.portNumber = portNumber;
+        this.functionID = functionID;
         this.requestArgs = requestArgs;
     }
 
@@ -27,6 +29,9 @@ public class Client extends Thread {
             output = new PrintWriter(socket.getOutputStream(), true);
 
             System.out.println("Successful connection at port " + portNumber);
+            sendRequest();
+            String response = receiveResponse();
+            System.out.println("Server response:\n" + response);
         } catch (IOException e) {
             throw new RuntimeException(e);
         } finally {
@@ -49,12 +54,38 @@ public class Client extends Thread {
         try {
             String ipAddress = args[0];
             int portNumber = Integer.parseInt(args[1]);
-            String[] requestArguments = Arrays.copyOfRange(args, 2, args.length);
+            int functionID = Integer.parseInt(args[2]);
+            String[] requestArguments = Arrays.copyOfRange(args, 3, args.length);
 
-            Client client = new Client(ipAddress, portNumber, requestArguments);
+            Client client = new Client(ipAddress, portNumber, functionID, requestArguments);
             client.start();
         } catch (NumberFormatException e) {
             System.out.println("Provide valid integer for port number");
         }
+    }
+
+    private void sendRequest() {
+        try {
+            output.println(functionID + " " + String.join(" ", requestArgs));
+            output.flush();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    private String receiveResponse() {
+        StringBuilder response = new StringBuilder();
+        String line;
+
+        try {
+            // Read data from the input stream
+            while ((line = input.readLine()) != null) {
+                response.append(line).append("\n");
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return response.toString();
     }
 }
