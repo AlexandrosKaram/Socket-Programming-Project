@@ -7,7 +7,7 @@ public class Message {
     private String receiver;
     private String body;
 
-    private static int idCounter = 0; // Static counter for unique IDs
+    private static int idCounter = 1; // Static counter for unique IDs
     private final int id;            // Unique ID for each message
 
     /**

@@ -44,7 +44,7 @@ public class Server extends Thread {
                     System.out.println("Function ID: " + functionID);
                     System.out.println("Request Arguments: " + String.join(", ", requestArgs));
 
-                    // TODO: handle request
+                    handleRequest(functionID, requestArgs);
                 }
 
                 clientSocket.close();
@@ -225,6 +225,8 @@ public class Server extends Thread {
         for (Message message : tempAcc.getMessageBox()) {
             messageBox.append(message.printMessageStatus());
         }
+        if (tempAcc.getMessageBox().isEmpty())
+            messageBox.append("No messages.");
 
         return messageBox.toString();
     }
